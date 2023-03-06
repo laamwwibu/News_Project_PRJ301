@@ -34,7 +34,7 @@ public class NewsController extends HttpServlet {
         NewsDAO newsDAO = new NewsDAO();
         ArrayList<News> list = newsDAO.getListNews(10);
         request.setAttribute("listNews", list);
-        RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
         rd.forward(request, response);
     }
 
@@ -44,9 +44,12 @@ public class NewsController extends HttpServlet {
         try {
             String action = request.getParameter("action");
             if (action == null || action.length() == 0) {
-                action = "list";
+                action = "listAllNews";
             }
             switch (action) {
+                case "listAllNews":
+                    getAllNews(request, response);
+                    return;
                 case "list":
                     getListNews(request, response);
                     break;

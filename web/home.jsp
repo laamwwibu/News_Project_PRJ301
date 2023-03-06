@@ -1,3 +1,5 @@
+<%@page import="dbObject.News"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,6 +17,10 @@
         <link rel="stylesheet" href="css/styleGlobal.css">
     </head>
     <body>
+        <%
+            ArrayList<News> listNews = new ArrayList<News>();
+            
+        %>
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container-fluid">
@@ -115,7 +121,7 @@
         <div class="latest-news">
             <div class="container-fluid">
                 <%
-                    for(int i = 0; i<4; i++) {
+                    for(News news : listNews) {
                 %>
                 <div class="row">
                     <div class="col-md-8 card latest-news-body nopadding">
@@ -125,14 +131,10 @@
                             </div>
                             <div class="col-md-6 card-content align-self-center nopadding">
                                 <div class="card-body">
-                                    <h5 class="card-subtitle">Sample category</h5>
-                                    <h3 class="card-title">Thousands Uncontactable As New Zealand Grapples with Its Worst
-                                        Natural
-                                        Disaster ‘This Century’</h3>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural
-                                        lead-in to
-                                        additional content. This content is a little bit longer.</p>
-                                    <h6 class="card-text">Sample author</h6>
+                                    <h5 class="card-subtitle"><%= news.getCat_name()%></h5>
+                                    <h3 class="card-title"><%= news.getTitle()%></h3>
+                                    <p class="card-text"><%= news.getSubtitle()%></p>
+                                    <h6 class="card-text"><%= news.getUser_id()%></h6>
                                 </div>
                             </div>
                         </div>
