@@ -18,6 +18,37 @@ import java.util.ArrayList;
  */
 public class NewsDAO {
 
+    public ArrayList<News> getAllNews() {
+        ArrayList<News> listNews = new ArrayList<>();
+        News news;
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            Statement st = con.createStatement();
+            String sql = "SELECT TOP * "
+                    + "FROM News n, Category c "
+                    + "WHERE n.Cat_id = c.Cat_id "
+                    + "ORDER BY n.News_id desc ;";
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                news = new News();
+                news.setUser_id(rs.getInt("User_id"));
+                news.setNews_id(rs.getInt("News_id"));
+                news.setCat_id(rs.getInt("Cat_id"));
+                news.setCat_name(rs.getString("Cat_name"));
+                news.setTitle(rs.getString("News_title"));
+                news.setSubtitle(rs.getString("News_subtitle"));
+                news.setImage(rs.getString("News_image"));
+                listNews.add(news);
+            }
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Error");
+        }
+        return listNews;
+    }
+
     public ArrayList<News> getListNews(int amountOfNews) {//get x amount of latest news
         ArrayList<News> listNews = new ArrayList<>();
         News news;
@@ -60,7 +91,7 @@ public class NewsDAO {
                     + " WHERE n.Cat_id = c.Cat_id "
                     + " AND n.News_id =  " + news_id + ";";
             ResultSet rs = st.executeQuery(sql);
-            
+
             rs.next();
             news = new News();
             news.setUser_id(rs.getInt("User_id"));

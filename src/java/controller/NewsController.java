@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class NewsController extends HttpServlet {
 
     String location = null;
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,7 +65,7 @@ public class NewsController extends HttpServlet {
                 case "delete":
                     deleteNews(request, response);
                     break;
-                default :
+                default:
                     getListNews(request, response);
                     break;
             }
@@ -73,6 +73,18 @@ public class NewsController extends HttpServlet {
 
         }
 
+    }
+
+    private void getAllNews(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<News> listNews = new ArrayList<>();
+        try {
+            NewsDAO newsDAO = new NewsDAO();
+            listNews = newsDAO.getAllNews();
+            request.setAttribute("listNews", listNews);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("ERROR GETTING LIST NEWS");
+        }
     }
 
     private void getListNews(HttpServletRequest request, HttpServletResponse response) {
@@ -87,9 +99,10 @@ public class NewsController extends HttpServlet {
             System.out.println("ERROR GETTING LIST NEWS");
         }
     }
+
     private void getNews(HttpServletRequest request, HttpServletResponse response) {
         try {
-            News news;    
+            News news;
             NewsDAO newsDAO = new NewsDAO();
             int news_id = Integer.parseInt(request.getParameter("news_id"));
             news = newsDAO.getNews(news_id);
@@ -99,8 +112,7 @@ public class NewsController extends HttpServlet {
             System.out.println("ERROR GETTING NEWS");
         }
     }
-    
-    
+
     private void updateNews(HttpServletRequest request, HttpServletResponse response) {
         try {
             NewsDAO dao = new NewsDAO();
@@ -215,7 +227,7 @@ public class NewsController extends HttpServlet {
         //Move image to new location in project folder called image
         NewsDAO dao = new NewsDAO();
         Path source = Paths.get(image); //original location of image
-        if (location == null){//check if global variable location contain location of project file
+        if (location == null) {//check if global variable location contain location of project file
             location = getLocation();
         }
         Path targetDir = Paths.get(location);//get location of image file in project 
