@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -18,35 +20,65 @@ import java.util.ArrayList;
  */
 public class NewsDAO {
 
+    public ArrayList<Map<String, Object>> getMapNews() {
+        ArrayList<Map<String, Object>> newsList = new ArrayList<>();
+        try {
+            DBContext db = new DBContext();
+            Connection con = db.getConnection();
+            if (con != null) {
+                String sql = "SELECT * FROM Category c, News n, UserS u\n"
+                        + "WHERE c.Cat_id = n.Cat_id AND u.User_id = n.User_id";
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    Map<String, Object> newsData = new HashMap<>();
+                    newsData.put("Cat_id", rs.getInt("Cat_id"));
+                    newsData.put("Cat_name", rs.getString("Cat_name"));
+                    newsData.put("Cat_description", rs.getString("Cat_description"));
+                    newsData.put("News_id", rs.getInt("News_id"));
+                    newsData.put("User_id", rs.getInt("User_id"));
+                    newsData.put("News_title", rs.getString("News_title"));
+                    newsData.put("News_title", rs.getString("News_title"));
+                    newsData.put("News_subtitle", rs.getString("News_subtitle"));
+                    newsData.put("News_content", rs.getString("News_content"));
+                    newsData.put("News_image", rs.getString("News_image"));
+                    newsData.put("User_name", rs.getString("User_name"));
+                    newsList.add(newsData);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return newsList;
+    }
+
     public ArrayList<News> getAllNews() {
-        ArrayList<News> listNews = new ArrayList<>();
+        ArrayList<News> list = new ArrayList<>();
         News news;
         try {
             DBContext db = new DBContext();
             Connection con = db.getConnection();
-            Statement st = con.createStatement();
-            String sql = "SELECT TOP * "
-                    + "FROM News n, Category c "
-                    + "WHERE n.Cat_id = c.Cat_id "
-                    + "ORDER BY n.News_id desc ;";
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                news = new News();
-                news.setUser_id(rs.getInt("User_id"));
-                news.setNews_id(rs.getInt("News_id"));
-                news.setCat_id(rs.getInt("Cat_id"));
-                news.setCat_name(rs.getString("Cat_name"));
-                news.setTitle(rs.getString("News_title"));
-                news.setSubtitle(rs.getString("News_subtitle"));
-                news.setImage(rs.getString("News_image"));
-                listNews.add(news);
+            if (con != null) {
+                String sql = "Select * from News";
+                Statement call = con.createStatement();
+                ResultSet rs = call.executeQuery(sql);
+                while (rs.next()) {
+                    news = new News();
+                    news.setUser_id(rs.getInt("User_id"));
+                    news.setNews_id(rs.getInt("News_id"));
+                    news.setCat_id(rs.getInt("Cat_id"));
+                    news.setTitle(rs.getString("News_title"));
+                    news.setSubtitle(rs.getString("News_subtitle"));
+                    news.setImage(rs.getString("News_image"));
+                    list.add(news);
+                }
+                call.close();
+                con.close();
             }
-            st.close();
-            con.close();
         } catch (Exception e) {
-            System.out.println("Error");
+            System.out.println(e.getMessage());
         }
-        return listNews;
+        return list;
     }
 
     public ArrayList<News> getListNews(int amountOfNews) {//get x amount of latest news
@@ -66,7 +98,6 @@ public class NewsDAO {
                 news.setUser_id(rs.getInt("User_id"));
                 news.setNews_id(rs.getInt("News_id"));
                 news.setCat_id(rs.getInt("Cat_id"));
-                news.setCat_name(rs.getString("Cat_name"));
                 news.setTitle(rs.getString("News_title"));
                 news.setSubtitle(rs.getString("News_subtitle"));
                 news.setImage(rs.getString("News_image"));
@@ -97,7 +128,6 @@ public class NewsDAO {
             news.setUser_id(rs.getInt("User_id"));
             news.setNews_id(rs.getInt("News_id"));
             news.setCat_id(rs.getInt("Cat_id"));
-            news.setCat_name(rs.getString("Cat_name"));
             news.setTitle(rs.getString("News_title"));
             news.setContent(rs.getString("News_content"));
             news.setSubtitle(rs.getString("News_subtitle"));
@@ -273,7 +303,13 @@ public class NewsDAO {
             DBContext db = new DBContext();
             Connection con = db.getConnection();
             Statement st = con.createStatement();
-            String sql = "SELECT IDENT_CURRENT ('News') AS latest_id ;";
+            String sql = "SELECT "
+                    + "  CASE "
+                    + "    WHEN (SELECT "
+                    + "        COUNT(1) "
+                    + "      FROM News ) = 0 THEN 1 "
+                    + "    ELSE IDENT_CURRENT('News') + 1 "
+                    + "  END AS latest_id;";
             ResultSet rs = st.executeQuery(sql);
             rs.next();
             latest_id = rs.getInt("latest_id");
@@ -285,19 +321,4 @@ public class NewsDAO {
         }
         return latest_id;
     }
-
-//    public static void main(String[] args) {
-//        News news = new News(1, 1, "lờ 'mao", "lờ mao", "lờ mao", "https;");
-//        insertNews(news);
-//        deleteNews(2);
-//        News news = new News(1, 1, 1,"mao","mao", " mao", " mao", "https;");
-//        updateNews(news);
-//
-//        ArrayList<News> listNews = searchCategory(1);
-//        ArrayList<News> listNews = getNews(5);
-//        for (News i : listNews) {
-//            System.out.println(i);
-//        }
-//
-//    }
 }

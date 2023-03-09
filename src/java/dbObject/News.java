@@ -9,19 +9,18 @@ package dbObject;
  * @author Asus
  */
 public class News {
+
     private int user_id;
     private int news_id;
     private int cat_id;
-    private String cat_name;
     private String title;
     private String subtitle;
     private String content;
     private String image;
-    private int save_id;
 
     public News() {
     }
-    
+
     public News(int user_id, int cat_id, String title, String subtitle, String content, String image) {
         this.user_id = user_id;
         this.cat_id = cat_id;
@@ -30,13 +29,11 @@ public class News {
         this.content = content;
         this.image = image;
     }
-    
-    
-    public News(int user_id, int news_id, int cat_id, String cat_name, String title, String subtitle, String content, String image) {
+
+    public News(int news_id, int user_id, int cat_id, String title, String subtitle, String content, String image) {
         this.user_id = user_id;
         this.news_id = news_id;
         this.cat_id = cat_id;
-        this.cat_name = cat_name;
         this.title = title;
         this.subtitle = subtitle;
         this.content = content;
@@ -65,14 +62,6 @@ public class News {
 
     public void setCat_id(int cat_id) {
         this.cat_id = cat_id;
-    }
-
-    public String getCat_name() {
-        return cat_name;
-    }
-
-    public void setCat_name(String cat_name) {
-        this.cat_name = cat_name;
     }
 
     public String getTitle() {
@@ -109,9 +98,7 @@ public class News {
 
     @Override
     public String toString() {
-        return "News{" + "user_id=" + user_id + ", news_id=" + news_id + ", cat_id=" + cat_id + ", cat_name=" + cat_name + ", title=" + title + ", subtitle=" + subtitle + ", content=" + content + ", image=" + image + '}';
+        return "News{" + "user_id=" + user_id + ", news_id=" + news_id + ", cat_id=" + cat_id + ", title=" + title + ", subtitle=" + subtitle + ", content=" + content + ", image=" + image + '}';
     }
-    
-    
-    
+
 }
