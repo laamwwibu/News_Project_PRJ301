@@ -23,7 +23,7 @@
             <div class="container-fluid">
                 <!-- NAVBAR -->
                 <div class="navbar-logo col-md-1">
-                    <a class="navbar-brand" href="/MainPage">
+                    <a class="navbar-brand" href="MainPage">
                         <img style="width: 100px;" src="image/branding/vice logo.png" alt="">
                     </a>
                 </div>
@@ -146,7 +146,7 @@
                     <div class="col-md-8 latest-news-body nopadding">
                         <div class="row nopadding">
                             <div class="col-md-6 card-image nopadding">
-                                <img class="card-img" src="<%= session.getAttribute("location") %><%= news_list.get(idx).getImage() %>.webp" alt="...">
+                                <img class="card-img" src="<%= session.getAttribute("location") %><%= news_list.get(idx).getImage() %>" alt="...">
                             </div>
                             <div class="col-md-6 card-content align-self-center nopadding">
                                 <div class="card-body">
