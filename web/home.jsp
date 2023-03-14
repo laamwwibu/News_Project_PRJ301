@@ -124,6 +124,7 @@
                             <h6 class="card-text">Sample author</h6>
                             <h6 class="card-text">Sample time</h6>
                         </div>
+                        <a style="position: absolute; width: 100%; height: 100%;" href="newsInfo.html"></a>
                     </div>
                     <div class="card">
                         <img src="image/news/japan.webp" class="card-img-top" alt="...">

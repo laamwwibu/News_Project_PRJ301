@@ -4,53 +4,18 @@
  */
 package dao;
 
-import dbConnect.DBContext;
-import dbObject.News;
+import model.News;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Asus
  */
 public class NewsDAO {
-
-    public ArrayList<Map<String, Object>> getMapNews() {
-        ArrayList<Map<String, Object>> newsList = new ArrayList<>();
-        try {
-            DBContext db = new DBContext();
-            Connection con = db.getConnection();
-            if (con != null) {
-                String sql = "SELECT * FROM Category c, News n, UserS u\n"
-                        + "WHERE c.Cat_id = n.Cat_id AND u.User_id = n.User_id";
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while (rs.next()) {
-                    Map<String, Object> newsData = new HashMap<>();
-                    newsData.put("Cat_id", rs.getInt("Cat_id"));
-                    newsData.put("Cat_name", rs.getString("Cat_name"));
-                    newsData.put("Cat_description", rs.getString("Cat_description"));
-                    newsData.put("News_id", rs.getInt("News_id"));
-                    newsData.put("User_id", rs.getInt("User_id"));
-                    newsData.put("News_title", rs.getString("News_title"));
-                    newsData.put("News_title", rs.getString("News_title"));
-                    newsData.put("News_subtitle", rs.getString("News_subtitle"));
-                    newsData.put("News_content", rs.getString("News_content"));
-                    newsData.put("News_image", rs.getString("News_image"));
-                    newsData.put("User_name", rs.getString("User_name"));
-                    newsList.add(newsData);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return newsList;
-    }
 
     public ArrayList<News> getAllNews() {
         ArrayList<News> list = new ArrayList<>();
@@ -62,7 +27,7 @@ public class NewsDAO {
                 String sql = "Select * from News";
                 Statement call = con.createStatement();
                 ResultSet rs = call.executeQuery(sql);
-                while (rs.next()) {
+                while (rs.next()) {             //needed even if just 1 row       
                     news = new News();
                     news.setUser_id(rs.getInt("User_id"));
                     news.setNews_id(rs.getInt("News_id"));
@@ -321,4 +286,19 @@ public class NewsDAO {
         }
         return latest_id;
     }
+
+//    public static void main(String[] args) {
+//        News news = new News(1, 1, "lờ 'mao", "lờ mao", "lờ mao", "https;");
+//        insertNews(news);
+//        deleteNews(2);
+//        News news = new News(1, 1, 1,"mao","mao", " mao", " mao", "https;");
+//        updateNews(news);
+//
+//        ArrayList<News> listNews = searchCategory(1);
+//        ArrayList<News> listNews = getNews(5);
+//        for (News i : listNews) {
+//            System.out.println(i);
+//        }
+//
+//    }
 }
